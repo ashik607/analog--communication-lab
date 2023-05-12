@@ -1,0 +1,239 @@
+clc;
+clear all;
+close all;
+t=0:0.001:2;
+f1=5
+m=sin(2*pi*f1*t)
+subplot(5,1,1);
+plot(t,m,'blue');
+title("Message Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+f2=50;
+c=sin(2*pi*f2*t)
+subplot(5,1,2);
+plot(t,c);
+title("Carrier Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+m1=0.5;
+s1=(1+(m1.*m)).*c;
+subplot(5,1,3);
+plot(t,s1,'green');
+title("Under Modulation Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+m2=1;
+s2=(1+(m2.*m)).*c;
+subplot(5,1,4);
+plot(t,s2,'Black');
+title("Critical Modulation Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+m3=1.5;
+s3=(1+(m3.*m)).*c;
+subplot(5,1,5);
+plot(t,s3);
+title("Over Modulation Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+axis([0,2-2.5,2.5]);
+
+--------------------------------------------------------------
+
+clc;
+clear all;
+close all;
+fm=15;
+b=5;
+t=0:0.0001:0.25;
+m=cos(2*pi*fm*t)
+subplot(3,1,1);
+plot(t,m,'red');
+title("Message Signal");
+xlabel("Time");
+ylabel("Amplitude");
+axis([0,0.25,-1.5,1.5]);
+grid on;
+
+fc=150;
+c=sin(2*pi*fc*t)
+subplot(3,1,2);
+plot(t,c,'green');
+title("Carrier Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+y=sin(2*pi*fc*t +(b*sin(2*pi*fm*t)));
+subplot(3,1,3);
+plot(t,y,'blue');
+title("Frequency Modulated Signal");
+xlabel("Time");
+ylabel("Amplitude");
+axis([0,0.25,-1.5,1.5]);
+grid on;
+
+--------------------------------------------------
+
+clc;
+clear all;
+close all;
+fm=10;
+fc=100;
+mp=10;
+time=0:0.0001:0.50;
+m=cos(2*pi*fm*time)
+subplot(3,1,1);
+plot(time,m,'black');
+title("Message Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+fc=150;
+c=sin(2*pi*fc*time);
+subplot(3,1,2);
+plot(time,c,'blue');
+title("Carrier Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+y=sin(2*pi*fc*time +mp*(sin(2*pi*fm*time)));
+subplot(3,1,3);
+plot(time,y);
+title("Phase Modulation Signal");
+xlabel("Time");
+ylabel("Amplitude");
+grid on;
+
+----------------------------------------------------------
+
+clc;
+clear all;
+close all;
+vm = 2;
+vc = 1;
+fc = 100;
+fm = 5;
+fs = 13000; %sampling frequency
+t = 0:1/fs:0.5;
+c = vc*sin(2*pi*fc*t);
+m = vm*sin(2*pi*fm*t);
+y = ammod(m,fc,fs);
+%y = (1+(sin(2*pi*fm*t))).*sin(2*pi*fc*t);
+subplot(4,1,1);
+plot(t,m);
+title('Modulating signal');
+xlabel('Time');
+ylabel('Amplitude');
+
+subplot(4,1,2);
+plot(t,c);
+title('Carrier signal');
+xlabel('Time');
+ylabel('Amplitude');
+
+subplot(4,1,3);
+plot(t,y);
+title('Modulated signal');
+xlabel('Time');
+ylabel('Amplitude');
+
+%% Demodulation
+d = demod(y,fc ,fs,'am');
+subplot(4,1,4);
+plot(t,d);
+title('Demodulated signal');
+grid on;
+
+-----------------------------------------------------
+clc;
+clear all;
+close all;
+Ac=1;
+Am=1;
+fm = 15;
+B = 5;
+fs = 10000;
+t = 0:1/fs:0.5;
+m=Am*cos(2*pi*fm*t);
+subplot(4,1,1);
+plot(t,m, 'black');
+xlabel('Time');
+ylabel('Amplitude');
+title('Message Signal');
+grid on;
+
+fc = 150;
+c = Ac*sin(2*pi*fc*t);
+subplot(4,1,2);
+plot(t,c,'black');
+xlabel('Time');
+ylabel('Amplitude');
+title('Carrier Signal');
+%axis([0,0.25,-1.5,1.5]);
+grid on;
+
+y = Ac*sin(2*pi*fc*t+(B*sin(2*pi*fm*t)));
+subplot(4,1,3);
+plot(t,y, 'black');
+xlabel('Time');
+ylabel('Amplitude');
+title('FM Signal');
+grid on;
+
+x = demod(y,fc,fs,'fm');
+subplot(4,1,4);
+plot(t,x, 'black');
+xlabel('Time');
+ylabel('Amplitude');
+title('Demodulated Signal');
+grid on;
+-----------------------------------------------
+
+
+clc;
+clear all;
+close all;
+f1=10;
+for f=1:50
+    x(f)=(1/sqrt(1+(f1/f)^2));
+    f2(f)=f;
+end
+subplot(2,1,1);
+plot(f2,x);
+title('Pre-Emphasis Waveform');
+
+for f=1:50
+     y(f)=(1/sqrt(1+(f/f1)^2));
+     f3(f)=f;
+end
+
+subplot(2,1,2);
+plot(f3,y);
+title('De-Emphasis Waveform');
+
+
+
+
+
+
+
+
+
+
+
+
+
